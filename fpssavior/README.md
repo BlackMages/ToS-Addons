@@ -38,7 +38,7 @@ Notes:
 Challenge Mode got revamped with the introduction of Episode 13-2. The content has so many mobs such that the old setting of SetDrawMonster (and possibly also SetDrawActor) became obsolete. In this version we introduce a way to change the SetDrawMonster value through the following command:
 - /fs_draw_mon [integer]
 
-The usual value of this variable is known to be 100, but we think it can be set to be higher. The value on High mode will always be 100 regardless of the setting.
+The usual value of this variable is known to be 100, but we think it can be set to be higher. Note that the value of SetDrawMonster on High mode will always be 100 regardless of the setting.
 
 We also implement a way to change SetDrawActor using the following command:
 - /fs_draw_pl [integer]
@@ -59,22 +59,22 @@ https://www.youtube.com/watch?v=cr237zMz8Fk
 There's also delete list, where all player inside the list is removed from the screen regardless of the option that the player use. The command list for delet list can be found using the following command:
 - /fs_del
 
-There was an Extreme Mode from the old version of FPS Savior that help reduce the lag a lot. However, many function on this mode is deprecrated when Ep 12 is introduced. The mode was removed since then. We put it back and renamed it as U2 or Ultra Low 2 just for the sake of history, also some function is still working but the effect is hard to be noticed. Basically it's Ultra Low + whatever function remains from the old Extreme Mode that can be invoked.
+There was an Extreme Mode from the old version of FPS Savior that help reduce the lag a lot. However, many function on this mode is deprecrated when Ep 12 is introduced. The mode was removed since then. We put it back and renamed it as U2 or Ultra Low 2 just for the sake of history, also some function is still working but the effect is hard to be noticed. Basically it's Ultra Low + whatever function remains from the old Extreme Mode that can be called.
 
 ---
 
 **-v2.4.4** 
 
-I just realized that L and UL are only different by 1 option that got turned off on UL. To make both mode has distict use, I modified L so that it will show the boss gimmick similar to H and M. The drawback is:
+We realized that L and UL are only different by 1 option that got turned off on UL. To make both mode has distict use, L is modified so that it will show the boss gimmick similar to H and M. The drawback is:
 - The option that disable the fallen leaves on orsha must be turned on on L. 
 - The "Show Other Character's Effects" option are turned on on L (This include the effect generate by appearance equipment).
 
-The reason why I don't just turn on EnableOtherPCEffect alone on L is that when certain gimmick is already shown inside the map, simply turning off EnableOtherPCEffect won't erase those gimmick. By toggling EnableOtherPCEffect along with EnableIMCEffect, the toggle-like effect on boss gimmick can be achieved.
+The reason why we don't just turn on EnableOtherPCEffect alone on L is that when certain gimmick is already shown inside the map, simply turning off EnableOtherPCEffect won't erase those gimmick. By toggling EnableOtherPCEffect along with EnableIMCEffect, the toggle-like effect on boss gimmick can be achieved.
 
 ---
 
 **-v2.4.3** a.k.a ep13fix-c.
 - The "View Boss Magic Circle Range" option can be freely toogled on M, L, and UL.
-- Someone inform me that the fog(?) and fallen leaves on Orsha hurts fps. After further investigation, I conclude that EnableGlow and EnableIMCEffect is responsible for that respectively. Both options are disabled on L and UL.
-- There's an issue with certain boss gimmick such as firewall or tornado not shown on map on M, L, and UL. I'm not sure what cause this (looks like it's not depends on just one option), but now it's only gone on L and UL.
+- Someone inform us that the fog(?) and fallen leaves on Orsha hurts fps. After further investigation, we conclude that EnableGlow and EnableIMCEffect is responsible for that respectively. Both options are disabled on L and UL.
+- There's an issue with certain boss gimmick such as firewall or tornado not shown on map on M, L, and UL. We're not sure what cause this (looks like it's not depends on just one option), but now it's only gone on L and UL.
 - Show damage of other character can be toggled freely on H and M.
