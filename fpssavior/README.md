@@ -3,6 +3,7 @@ Technically it's an EP13fix derived from [Xinxs's FPSSavior](https://github.com/
 
 Notes:
 - Fallen Leaves on orsha are disabled only on UL because it's related with boss gimmick, and when disabled can cause some trouble for people that doing those gimmick.
+- If the addon didn't work, try deleting settings.json file from addon/fpssavior folder.
 ---
 ### Commands:
 - /fpssavior help
