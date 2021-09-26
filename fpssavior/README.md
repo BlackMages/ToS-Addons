@@ -35,6 +35,17 @@ To acomodate guild content that involves a lot of player (such as GTW or Blockad
 
 The addon gained more popularity due to the support for the guild contents. However, there was concern from players since the addon also remove the players shop. The opinion regarding this matter is split into two, so we conclude that an option for showing/hiding the shop is necessary and introduced in this version.
 
+There was a problem with the option to only able to see your party member in GTW, that is it makes the coordination harder because you don't know where your other guildmates exactly is in the screen. We introduce an exception list feature to solve this problem. The player that registered inside that list will always be shown on the screen regardless of the options that the player use. The command list for exception list can be found using the following command:
+- /fs_ex
+
+Please refer to the following video to see this feature in action:
+https://www.youtube.com/watch?v=cr237zMz8Fk
+
+There's also delete list, where all player inside the list is removed from the screen regardless of the option that the player use. The command list for delet list can be found using the following command:
+- /fs_del
+
+There was an Extreme Mode from the old version of FPS Savior that help reduce the lag a lot. However, many function on this mode is deprecrated when Ep 12 is introduced. The mode was removed since then. We put it back and renamed it as U2 or Ultra Low 2 just for the sake of history, also some function is still working but the effect is hard to be noticed. Basically it's Ultra Low + whatever function remains from the old Extreme Mode that can be invoked.
+
 ---
 
 **-v2.4.4** 
