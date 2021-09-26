@@ -38,7 +38,9 @@ Notes:
 Challenge Mode got revamped with the introduction of Episode 13-2. The content has so many mobs such that the old setting of SetDrawMonster (and possibly also SetDrawActor) became obsolete. In this version we introduce a way to change the SetDrawMonster value through the following command:
 - /fs_draw_mon [integer]
 
-The usual value of this variable is known to be 100, but we think it can be set to be higher. We also implement a way to change SetDrawActor using the following command:
+The usual value of this variable is known to be 100, but we think it can be set to be higher. The value on High mode will always be 100 regardless of the setting.
+
+We also implement a way to change SetDrawActor using the following command:
 - /fs_draw_pl [integer]
 
 However, we fail to notice any changes from the game visual. Any info regarding what this value affect is appreciated.
