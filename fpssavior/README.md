@@ -18,6 +18,7 @@ Notes:
   Toggle betwen modes.
 ---
 ### Version History
+---
 **-v2.5.0** 
 
 Challenge Mode got revamped with the introduction of Episode 13-2. The content has so many mobs such that the old setting of SetDrawMonster (and possibly also SetDrawActor) became obsolete. In this version we introduce a way to change the SetDrawMonster value through the following command:
@@ -27,7 +28,7 @@ We also implement a way to change SetDrawActor using the following command:
 - /fs_draw_pl [integer]
 
 but we fail to notice any changes from the game visual. Any info on what this value affect is appreciated.
-
+---
 **-v2.4.4** 
 
 I just realized that L and UL are only different by 1 option that got turned off on UL. To make both mode has distict use, I modified L so that it will show the boss gimmick similar to H and M. The drawback is:
@@ -35,7 +36,7 @@ I just realized that L and UL are only different by 1 option that got turned off
 - The "Show Other Character's Effects" option are turned on on L (This include the effect generate by appearance equipment).
 
 The reason why I don't just turn on EnableOtherPCEffect alone on L is that when certain gimmick is already shown inside the map, simply turning off EnableOtherPCEffect won't erase those gimmick. By toggling EnableOtherPCEffect along with EnableIMCEffect, the toggle-like effect on boss gimmick can be achieved.
-
+---
 **-v2.4.3** a.k.a ep13fix-c.
 - The "View Boss Magic Circle Range" option can be freely toogled on M, L, and UL.
 - Someone inform me that the fog(?) and fallen leaves on Orsha hurts fps. After further investigation, I conclude that EnableGlow and EnableIMCEffect is responsible for that respectively. Both options are disabled on L and UL.
