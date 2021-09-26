@@ -26,10 +26,14 @@ Notes:
 Challenge Mode got revamped with the introduction of Episode 13-2. The content has so many mobs such that the old setting of SetDrawMonster (and possibly also SetDrawActor) became obsolete. In this version we introduce a way to change the SetDrawMonster value through the following command:
 - /fs_draw_mon [integer]
 
-We also implement a way to change SetDrawActor using the following command:
+The usual value of this variable is known to be 100, but we think it can be set to be higher. We also implement a way to change SetDrawActor using the following command:
 - /fs_draw_pl [integer]
 
-but we fail to notice any changes from the game visual. Any info on what this value affect is appreciated.
+However, we fail to notice any changes from the game visual. Any info regarding what this value affect is appreciated.
+
+To acomodate guild content that involves a lot of player (such as GTW or Blockade Battle) where the heavy lag is expected on weaker system, we introduce a way to completely remove any player that is not inside the same party of the user from the screen. 
+
+The addon gained more popularity due to the support for the guild contents. However, there was concern from players since the addon also remove the players shop. The opinion regarding this matter is split into two, so we conclude that an option for showing/hiding the shop is necessary and introduced in this version.
 
 ---
 
