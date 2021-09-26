@@ -39,6 +39,7 @@ There was a problem with the option to only able to see your party member in GTW
 - /fs_ex
 
 Please refer to the following video to see this feature in action:
+
 https://www.youtube.com/watch?v=cr237zMz8Fk
 
 There's also delete list, where all player inside the list is removed from the screen regardless of the option that the player use. The command list for delet list can be found using the following command:
