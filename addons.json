@@ -3,10 +3,10 @@
 		"name" : "FPS Savior v2 ep13fix",
 		"file" : "fpssavior",
 		"extension" : "ipf",
-		"fileVersion" : "v2.4.4",
+		"fileVersion" : "v2.5.0",
 		"releaseTag" : "fpssavior",
 		"unicode" : "⛄",
-		"description" : "FPS Savior fix for EP13 and 64bit patch.",
+		"description" : "FPS Savior fix for EP13-2 CM and guild content options.",
 		"tags" : [
 			"fps",
 			"graphic",
