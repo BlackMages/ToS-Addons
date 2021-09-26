@@ -6,7 +6,7 @@
 		"fileVersion" : "v2.5.0",
 		"releaseTag" : "fpssavior",
 		"unicode" : "⛄",
-		"description" : "FPS Savior fix for EP13-2 CM and guild content options.",
+		"description" : "This addon gives modes that you can choose to reduce lag.<br> This is an FPS Savior fix for EP13-2 CM and guild content options.<br>See github for more information.",
 		"tags" : [
 			"fps",
 			"graphic",
