@@ -45,11 +45,11 @@ We also implement a way to change SetDrawActor using the following command:
 
 However, we fail to notice any changes from the game visual. Any info regarding what this value affect is appreciated.
 
-To acomodate guild content that involves a lot of player (such as GTW or Blockade Battle) where the heavy lag is expected on weaker system, we introduce a way to completely remove any player that is not inside the same party of the user from the screen. 
+To acomodate guild content that involves a lot of player (such as GTW or Blockade Battle) where the heavy lag is expected on weaker system, we introduce an option to completely remove any player that is not inside the same party of the user from the screen. 
 
-The addon gained more popularity due to the support for the guild contents. However, there was concern from players since the addon also remove the players shop. The opinion regarding this matter is split into two, so we conclude that an option for showing/hiding the shop is necessary and introduced in this version.
+There was concern from players since the addon also remove the players shop. The opinion regarding this matter is split into two equally, so we conclude that an option for showing/hiding the shop is necessary and introduced it in this version.
 
-There was a problem with the option to only able to see your party member in GTW, that is it makes the coordination harder because you don't know where your other guildmates exactly is in the screen. We introduce an exception list feature to solve this problem. The player that registered inside that list will always be shown on the screen regardless of the options that the player use. The command list for exception list can be found using the following command:
+There was a problem with the option to only able to see your party member in GTW, that is it makes the coordination harder because you don't know where your other guildmates exactly is on the screen. We introduce an exception list feature to solve this problem. The player that registered inside that list will always be shown on the screen regardless of the options that the player use, so you can put strategic player like guildmaster or war commander inside the list to have them always shown on your screen. The command list for exception list can be found using the following command:
 - /fs_ex
 
 Please refer to the following video to see this feature in action:
