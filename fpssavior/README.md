@@ -19,12 +19,14 @@ Notes:
 ---
 ### Version History
 **-v2.5.0** 
+
 Challenge Mode got revamped with the introduction of Episode 13-2. The content has so many mobs such that the old setting of SetDrawMonster (and possibly also SetDrawActor) became obsolete. In this version we introduce a way to change the SetDrawMonster value through the following command:
 - /fs_draw_mon [integer]
 
 We also implement a way to change SetDrawActor using the command /fs_draw_pl [integer], but we fail to notice any changes from the game visual. Any info on what this value affect is appreciated.
 
 **-v2.4.4** 
+
 I just realized that L and UL are only different by 1 option that got turned off on UL. To make both mode has distict use, I modified L so that it will show the boss gimmick similar to H and M. The drawback is:
 - The option that disable the fallen leaves on orsha must be turned on on L. 
 - The "Show Other Character's Effects" option are turned on on L (This include the effect generate by appearance equipment).
