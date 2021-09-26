@@ -5,7 +5,7 @@ _G["ADDONS"] = _G["ADDONS"] or {}
 _G["ADDONS"][author] = _G["ADDONS"][author] or {}
 _G["ADDONS"][author][addonName] = _G["ADDONS"][author][addonName] or {}
 local g = _G["ADDONS"][author][addonName];
-g.saviormode = {"{#2D9B27}{ol}HIGH","{#F2F407}{ol}MEDIUM","{#284B7E}{ol}LOW","{#532881}{ol}UltraLOW"};
+g.saviormode = {"{#2D9B27}{ol}HIGH","{#F2F407}{ol}MEDIUM","{#284B7E}{ol}LOW","{#532881}{ol}UltraLOW","{#532881}{ol}ULow2"};
 
 local acutil = require("acutil");
 CHAT_SYSTEM("FPS Savior loaded! Help: /fpssavior help");
@@ -13,6 +13,10 @@ CHAT_SYSTEM("FPS Savior loaded! Help: /fpssavior help");
 function FPSSAVIOR_ON_INIT(addon, frame)
 	frame:ShowWindow(1);
 	acutil.slashCommand("/fpssavior",FPSSAVIOR_CMD);
+	acutil.slashCommand("/fs_ex",FPSSAVIOR_EX_CMD);
+	acutil.slashCommand("/fs_del",FPSSAVIOR_DEL_CMD);
+	acutil.slashCommand("/fs_draw_pl", FPSSAVIOR_MAXPL_CMD);
+	acutil.slashCommand("/fs_draw_mon", FPSSAVIOR_MAXMON_CMD);
 	addon:RegisterMsg("GAME_START", "FPSSAVIOR_START");
 	addon:RegisterMsg("FPS_UPDATE", "FPSSAVIOR_SHOWORHIDE_OBJ");
 	
@@ -27,9 +31,15 @@ function FPSSAVIOR_LOADSETTINGS()
 	end
 	if settings.allplayers == nil then
 		settings.allplayers = 0;
+		settings.shops = 0;
+		settings.noguild = 0;
 		settings.onlypt = 0;
 		settings.allsum = 0;
 		settings.onlymy = 0;
+		settings.exception = {};
+		settings.deletion = {};
+		settings.drawplayer = 100;
+		settings.drawmonster = 100;
 	end
 		g.settings = settings;
 end
@@ -42,9 +52,15 @@ function FPSSAVIOR_SAVESETTINGS()
 			displayY = 920,
 			lock = 1,
 			allplayers = 0,
+			shops = 0,
+			noguild = 0,
 			onlypt = 0,
 			allsum = 0,
-			onlymy = 0
+			onlymy = 0,
+			exception = {},
+			deletion = {},
+			drawplayer = 100,
+			drawmonster = 100
 		};
 	end
 	acutil.saveJSON("../addons/fpssavior/settings.json", g.settings);
@@ -66,7 +82,7 @@ function FPSSAVIOR_START()
 	if saviorFrame == nil then
 		saviorFrame = ui.CreateNewFrame("fpssavior","fpssaviorframe");
 		saviorFrame:SetBorder(0, 0, 0, 0);
-		saviorFrame:Resize(100,60)
+		saviorFrame:Resize(125,60)
 		saviorFrame:SetOffset(g.settings.displayX, g.settings.displayY);
 		saviorFrame:ShowWindow(1);
 		saviorFrame:SetLayerLevel(61);
@@ -104,8 +120,14 @@ function FPSSAVIOR_START()
 
 		btnsaviorUlow = saviorFrame:CreateOrGetControl('button', 'btnul', 0, 0, 25, 20); 
 		btnsaviorUlow:SetOffset(75, 40); 
-		btnsaviorUlow:SetText("{s16}{#532881}{ol}UL");
+		btnsaviorUlow:SetText("{s16}{#532881}{ol}U1");
 		btnsaviorUlow:SetEventScript(ui.LBUTTONDOWN, 'FPSSAVIOR_ULOW');
+		
+		btnsaviorEX = saviorFrame:CreateOrGetControl('button', 'btnex', 0, 0, 25, 20); 
+		btnsaviorEX:SetOffset(100, 40); 
+		btnsaviorEX:SetText("{s16}{#532881}{ol}U2");
+		--EE0000
+		btnsaviorEX:SetEventScript(ui.LBUTTONDOWN, 'FPSSAVIOR_EX');
 	end
 	if not saviorFrame.isDragging then
 		saviorFrame:SetOffset(g.settings.displayX, g.settings.displayY);
@@ -116,8 +138,10 @@ function FPSSAVIOR_START()
 		FPSSAVIOR_MEDIUM();
 	elseif g.settings.saviorToggle == 3 then
 		FPSSAVIOR_LOW();
-	else
+	elseif g.settings.saviorToggle == 4 then
 		FPSSAVIOR_ULOW();
+	else
+		FPSSAVIOR_EX();
 	end
 end
 
@@ -135,7 +159,7 @@ function FPSSAVIOR_CONFIGFRAME()
 	if configframe == nil then
 		configframe = ui.CreateNewFrame("fpssavior","fpssaviorconfig");
 		configframe:SetSkinName("pip_simple_frame");
-		configframe:Resize(170,152);
+		configframe:Resize(170,190);
 		configframe:SetLayerLevel(62);
 	end
 	configframe:ShowWindow(1);
@@ -144,33 +168,45 @@ function FPSSAVIOR_CONFIGFRAME()
 	if mainY < 210 then
 		configframe:SetOffset(mainX,mainY+60);
 	else
-		configframe:SetOffset(mainX,mainY-134);
+		configframe:SetOffset(mainX,mainY-172);
 	end
 	
 	local playerText = configframe:CreateOrGetControl("richtext","playertext",5,10,0,0);
 	playerText:SetText("{ol}Players:");
+	
 	local playerBox = configframe:CreateOrGetControl('checkbox', 'allplayersbox', 5, 32, 100, 20)
-	playerBox:SetText("{ol}Hide all");
+	playerBox:SetText("{ol}Hide all");	
 	playerBox:SetEventScript(ui.LBUTTONUP,"FPSSAVIOR_SAVECONFIGFRAME1");
-	--playerBox:SetEventScriptArgString(ui.LBUTTONUP, "allplayers");
 	local playerBoxchild = GET_CHILD(configframe, "allplayersbox");
 	playerBoxchild:SetCheck(g.settings.allplayers);
+	
 	playerBox = configframe:CreateOrGetControl('checkbox', 'onlyptbox', 5, 54, 100, 20)
 	playerBox:SetText("{ol}Show pt/guild only");
 	playerBox:SetEventScript(ui.LBUTTONUP,"FPSSAVIOR_SAVECONFIGFRAME2");
-	--playerBox:SetEventScriptArgString(ui.LBUTTONUP, "onlypt");
 	playerBoxchild = GET_CHILD(configframe, "onlyptbox");
 	playerBoxchild:SetCheck(g.settings.onlypt);
+	
+	playerBox = configframe:CreateOrGetControl('checkbox', 'noguildbox', 5, 76, 100, 20)
+	playerBox:SetText("{ol}Show pt only");
+	playerBox:SetEventScript(ui.LBUTTONUP,"FPSSAVIOR_SAVECONFIGFRAME5");
+	playerBoxchild = GET_CHILD(configframe, "noguildbox");
+	playerBoxchild:SetCheck(g.settings.noguild);
+
+	playerBox = configframe:CreateOrGetControl('checkbox', 'shopsbox', 5, 98, 100, 20)
+	playerBox:SetText("{ol}Hide player shops");
+	playerBox:SetEventScript(ui.LBUTTONUP,"FPSSAVIOR_SAVECONFIGFRAME6");
+	playerBoxchild = GET_CHILD(configframe, "shopsbox");
+	playerBoxchild:SetCheck(g.settings.shops);
 		
-	local summonText = configframe:CreateOrGetControl("richtext","summontext",5,80,0,0);
+	local summonText = configframe:CreateOrGetControl("richtext","summontext",5,118,0,0);
 	summonText:SetText("{ol}Summons:");
-	local summonBox = configframe:CreateOrGetControl('checkbox', 'allsumbox', 5, 102, 100, 20)
+	local summonBox = configframe:CreateOrGetControl('checkbox', 'allsumbox', 5, 140, 100, 20)
 	summonBox:SetText("{ol}Hide all");
 	summonBox:SetEventScript(ui.LBUTTONUP,"FPSSAVIOR_SAVECONFIGFRAME3");
 	--summonBox:SetEventScriptArgString(ui.LBUTTONUP, "allsum");
 	local summonBoxchild = GET_CHILD(configframe, "allsumbox");
 	summonBoxchild:SetCheck(g.settings.allsum);
-	summonBox = configframe:CreateOrGetControl('checkbox', 'onlymybox', 5, 124, 100, 20)
+	summonBox = configframe:CreateOrGetControl('checkbox', 'onlymybox', 5, 162, 100, 20)
 	summonBox:SetText("{ol}Show mine only");
 	summonBox:SetEventScript(ui.LBUTTONUP,"FPSSAVIOR_SAVECONFIGFRAME4");
 	--summonBox:SetEventScriptArgString(ui.LBUTTONUP, "onlymy");
@@ -184,8 +220,11 @@ function FPSSAVIOR_SAVECONFIGFRAME1()
 	if playerBoxchild:IsChecked() == 1 then
 			g.settings.allplayers = 1;
 			g.settings.onlypt = 0;
+			g.settings.noguild = 0;
 			playerBoxchild = GET_CHILD(configframe, "onlyptbox");
 			playerBoxchild:SetCheck(g.settings.onlypt);
+			playerBoxchild = GET_CHILD(configframe, "noguildbox");
+			playerBoxchild:SetCheck(g.settings.noguild);
 	else
 			g.settings.allplayers = 0;
 	end
@@ -198,14 +237,47 @@ function FPSSAVIOR_SAVECONFIGFRAME2()
 	if playerBoxchild:IsChecked() == 1 then
 			g.settings.allplayers = 0;
 			g.settings.onlypt = 1;
+			g.settings.noguild = 0;
 			playerBoxchild = GET_CHILD(configframe, "allplayersbox");
 			playerBoxchild:SetCheck(g.settings.allplayers);
+			playerBoxchild = GET_CHILD(configframe, "noguildbox");
+			playerBoxchild:SetCheck(g.settings.noguild);
 	else
 			g.settings.onlypt = 0;
 	end
 	acutil.saveJSON("../addons/fpssavior/settings.json", g.settings);
 	--FPSSAVIOR_CONFIGFRAME()
 end
+function FPSSAVIOR_SAVECONFIGFRAME5()
+	local configframe = ui.GetFrame('fpssaviorconfig');
+	local playerBoxchild = GET_CHILD(configframe, "noguildbox");
+	if playerBoxchild:IsChecked() == 1 then
+			g.settings.allplayers = 0;
+			g.settings.onlypt = 0;
+			g.settings.noguild = 1;
+			playerBoxchild = GET_CHILD(configframe, "allplayersbox");
+			playerBoxchild:SetCheck(g.settings.allplayers);
+			playerBoxchild = GET_CHILD(configframe, "onlyptbox");
+			playerBoxchild:SetCheck(g.settings.onlypt);
+	else
+			g.settings.noguild = 0;
+	end
+	acutil.saveJSON("../addons/fpssavior/settings.json", g.settings);
+	--FPSSAVIOR_CONFIGFRAME()
+end
+
+function FPSSAVIOR_SAVECONFIGFRAME6()
+	local configframe = ui.GetFrame('fpssaviorconfig');
+	local playerBoxchild = GET_CHILD(configframe, "shopsbox");
+	if playerBoxchild:IsChecked() == 1 then
+		g.settings.shops = 1;
+	else
+		g.settings.shops = 0;
+	end
+	acutil.saveJSON("../addons/fpssavior/settings.json", g.settings);
+	--FPSSAVIOR_CONFIGFRAME()
+end
+
 function FPSSAVIOR_SAVECONFIGFRAME3()
 	local configframe = ui.GetFrame('fpssaviorconfig');
 	local summonBoxchild = GET_CHILD(configframe, "allsumbox");
@@ -235,6 +307,121 @@ function FPSSAVIOR_SAVECONFIGFRAME4()
 	--FPSSAVIOR_CONFIGFRAME()
 end
 
+function FPSSAVIOR_EX_CMD(command)
+	local cmd = "";
+	if #command > 1 then
+		cmd = table.remove(command, 1);
+		team_name = table.remove(command, 1);
+	else
+		if #command > 0 then
+			cmd = table.remove(command, 1);
+		else
+			CHAT_SYSTEM("FPS Savior Exception Help:{nl}'/fs_ex list' to print all team names inside the exception list.{nl}'/fs_ex add team_name' to put player with that team name inside the exception list.{nl}'/fs_ex remove team_name' to remove player with that team name from the exception list.");
+			return;
+		end
+	end
+	if cmd == "add" then
+		if g.settings.exception == nil then
+			g.settings.exception = {}
+		end
+		g.settings.exception[team_name] = true;
+		CHAT_SYSTEM(team_name .. " is added to exception list.");
+		FPSSAVIOR_SAVESETTINGS();
+		return;
+	end
+	if cmd == "remove" then
+		if g.settings.exception == nil then
+			g.settings.exception = {}
+		end
+		g.settings.exception[team_name] = false;
+		CHAT_SYSTEM(team_name .. " is removed from exception list.");
+		FPSSAVIOR_SAVESETTINGS();
+		return;
+	end
+	if cmd == "list" then
+		CHAT_SYSTEM("The following player are inside the exception list:");
+		list = g.settings.exception;
+		for key,value in pairs(list) do
+			if list[key] then
+				CHAT_SYSTEM(key);
+			end
+		end
+		return;
+	end
+	CHAT_SYSTEM("Invalid command. Available commands:{nl}/fs_ex{nl}/fs_ex add team_name{nl}/fs_ex remove team_name{nl}/fs_ex list");
+	return;	
+end
+
+function FPSSAVIOR_DEL_CMD(command)
+	local cmd = "";
+	if #command > 1 then
+		cmd = table.remove(command, 1);
+		team_name = table.remove(command, 1);
+	else
+		if #command > 0 then
+			cmd = table.remove(command, 1);
+		else
+			CHAT_SYSTEM("FPS Savior Delete Help:{nl}'/fs_del list' to print all team names inside the delete list.{nl}'/fs_del add team_name' to put player with that team name inside the delete list.{nl}'/fs_del remove team_name' to remove player with that team name from the delete list.");
+			return;
+		end
+	end
+	if cmd == "add" then
+		if g.settings.deletion == nil then
+			g.settings.deletion = {}
+		end
+		g.settings.deletion[team_name] = true;
+		CHAT_SYSTEM(team_name .. " is added to delete list.");
+		FPSSAVIOR_SAVESETTINGS();
+		return;
+	end
+	if cmd == "remove" then
+		if g.settings.deletion == nil then
+			g.settings.deletion = {}
+		end
+		g.settings.deletion[team_name] = false;
+		CHAT_SYSTEM(team_name .. " is removed from delete list.");
+		FPSSAVIOR_SAVESETTINGS();
+		return;
+	end
+	if cmd == "list" then
+		CHAT_SYSTEM("The following player are inside the delete list:");
+		list = g.settings.deletion;
+		for key,value in pairs(list) do
+			if list[key] then
+				CHAT_SYSTEM(key);
+			end
+		end
+		return;
+	end
+	CHAT_SYSTEM("Invalid command. Available commands:{nl}/fs_del{nl}/fs_del add team_name{nl}/fs_del remove team_name{nl}/fs_del list");
+	return;	
+end
+
+function FPSSAVIOR_MAXPL_CMD(command)
+	local cmd = "";
+	if #command > 0 then
+		cmd = table.remove(command, 1);
+		g.settings.drawplayer = tonumber(cmd);
+		FPSSAVIOR_SAVESETTINGS();
+		return;
+	end
+	CHAT_SYSTEM("Invalid command. Available commands:{nl}/fs_draw_pl integer");
+	return;
+end
+
+function FPSSAVIOR_MAXMON_CMD(command)
+	local cmd = "";
+	if #command > 0 then
+		cmd = table.remove(command, 1);
+		g.settings.drawmonster = tonumber(cmd);
+		FPSSAVIOR_SAVESETTINGS();
+		return;
+	end
+	CHAT_SYSTEM("Invalid command. Available commands:{nl}/fs_draw_mon integer");
+	return;
+end
+
+
 function FPSSAVIOR_CMD(command)
 	local cmd = "";
 	if #command > 0 then
@@ -244,7 +431,7 @@ function FPSSAVIOR_CMD(command)
 		return;
 	end
 	if cmd == "help" then
-		CHAT_SYSTEM("FPS Savior Help:{nl}'/fpssavior' to toggle between 3 predefined settings High, Low, and Ultra Low.{nl}'/fpssavior lock' to unlock/lock the settings display in order to move it around.{nl}'/fpssavior default' to restore the settings display to its default location.");
+		CHAT_SYSTEM("FPS Savior Help:{nl}'/fpssavior' to toggle between 3 predefined settings High, Low, and Ultra Low.{nl}'/fpssavior lock' to unlock/lock the settings display in order to move it around.{nl}'/fpssavior default' to restore the settings display to its default location.{nl}'/fs_ex' and '/fs_del' for help about exception list and deletion list, respectively.{nl}'/fs_draw_pl' and '/fs_draw_mon' to set the maximum player and monster shown on the map, respectively.");
 		return;
 	end
 	if cmd == "lock" then
@@ -290,7 +477,7 @@ end
 
 function FPSSAVIOR_HIGH()
 	g.settings.saviorToggle = 1;
-	
+
 	graphic.SetDrawActor(100);
 	graphic.SetDrawMonster(100);
 	graphic.EnableBloom(1);
@@ -305,7 +492,7 @@ function FPSSAVIOR_HIGH()
 
 	config.SetRenderShadow(1)
 	imcperfOnOff.EnableRenderShadow(1); 
-
+	
 	imcperfOnOff.EnablePlaneLight(1);
 	imcperfOnOff.EnableWater(1);
 	
@@ -316,8 +503,14 @@ function FPSSAVIOR_HIGH()
 	
 	-- This turn on the "Show Boss Skill Magic Circle" options.
 	config.SetEnableShowBossSkillRange(1);
+	
 	config.SetIsEnableSummonAlpha(1)
-
+	
+	ACTIVATE_HIDDEN();
+	
+	--lowmodeconfig
+	--graphic.EnableLowOption(0);
+	--config.SetAutoAdjustLowLevel(2);
 	config.SaveConfig();
 	
 	FPSSAVIOR_SETTEXT();
@@ -326,32 +519,37 @@ end
 
 function FPSSAVIOR_MEDIUM()
 	g.settings.saviorToggle = 2;
-	
-	graphic.SetDrawActor(40);
-	graphic.SetDrawMonster(50);
+		
+	graphic.SetDrawActor(g.settings.drawplayer);
+	graphic.SetDrawMonster(g.settings.drawmonster);
 	graphic.EnableBloom(0);
 	graphic.EnableCharEdge(1);
 	graphic.EnableFXAA(1);
 	graphic.EnableGlow(1);
 	graphic.EnableHighTexture(1);
-	graphic.EnableSoftParticle(0);	
-	graphic.EnableWater(1); 
+	graphic.EnableSoftParticle(0);
+	graphic.EnableWater(1);
 	imcperfOnOff.EnableIMCEffect(1);
 	imcperfOnOff.EnableEffect(1);
 
 	config.SetRenderShadow(0)
 	imcperfOnOff.EnableRenderShadow(0);
-
+	
 	imcperfOnOff.EnablePlaneLight(1);
 	imcperfOnOff.EnableWater(1);
 	
 	imcperfOnOff.EnableDeadParts(0);
 	config.EnableOtherPCEffect(1);
-	--config.EnableOtherPCDamageEffect(0);
+	--.EnableOtherPCDamageEffect(0);
 	graphic.EnableHitGlow(0);
 	--config.SetEnableShowBossSkillRange(1);
 	config.SetIsEnableSummonAlpha(1)
-
+	
+	ACTIVATE_HIDDEN();
+		
+	--lowmodeconfig
+	--graphic.EnableLowOption(0);
+	--config.SetAutoAdjustLowLevel(2);
 	config.SaveConfig();
 		
 	FPSSAVIOR_SETTEXT();
@@ -360,9 +558,9 @@ end
 
 function FPSSAVIOR_LOW()
 	g.settings.saviorToggle = 3;
-	
-	graphic.SetDrawActor(30);
-	graphic.SetDrawMonster(30);
+		
+	graphic.SetDrawActor(g.settings.drawplayer);
+	graphic.SetDrawMonster(g.settings.drawmonster);
 	graphic.EnableBloom(0);
 	graphic.EnableCharEdge(0);
 	graphic.EnableFXAA(0);
@@ -372,15 +570,14 @@ function FPSSAVIOR_LOW()
 	
 	graphic.EnableHighTexture(0);
 	graphic.EnableSoftParticle(0);
-	graphic.EnableWater(1);
+	graphic.EnableWater(0);
 	
 	-- This can disable the fallen leaves effect on Orsha.
 	imcperfOnOff.EnableIMCEffect(1);
-	
 	imcperfOnOff.EnableEffect(1);
-
+	
 	config.SetRenderShadow(0)
-	imcperfOnOff.EnableRenderShadow(0); 
+	imcperfOnOff.EnableRenderShadow(0);
 	
 	imcperfOnOff.EnablePlaneLight(0);
 	imcperfOnOff.EnableWater(0);
@@ -392,6 +589,11 @@ function FPSSAVIOR_LOW()
 	--config.SetEnableShowBossSkillRange(0);
 	config.SetIsEnableSummonAlpha(0)
 	
+	ACTIVATE_HIDDEN();
+	
+	--lowmodeconfig
+	--graphic.EnableLowOption(1);
+	--config.SetAutoAdjustLowLevel(0);
 	config.SaveConfig();
 	
 	FPSSAVIOR_SETTEXT();
@@ -401,20 +603,62 @@ end
 function FPSSAVIOR_ULOW()
 	g.settings.saviorToggle = 4;
 		
-	graphic.SetDrawActor(20);
-	graphic.SetDrawMonster(30);
+	graphic.SetDrawActor(g.settings.drawplayer);
+	graphic.SetDrawMonster(g.settings.drawplayer);
 	graphic.EnableBloom(0);
 	graphic.EnableCharEdge(0);
 	graphic.EnableFXAA(0);
 	graphic.EnableGlow(0);
 	graphic.EnableHighTexture(0);
 	graphic.EnableSoftParticle(0);
+	graphic.EnableWater(0);
 	
-	-- This hides tornado in WBR
-	graphic.EnableWater(0); 
+	-- These two contibutes to tornado in WBR
 	imcperfOnOff.EnableIMCEffect(0);
+	config.EnableOtherPCEffect(0);
+	
+	-- Skill effect animation. Firewall, barier, etc.
 	imcperfOnOff.EnableEffect(0);
 
+	config.SetRenderShadow(0)
+	
+	imcperfOnOff.EnableRenderShadow(0); 
+	imcperfOnOff.EnablePlaneLight(0);
+	imcperfOnOff.EnableWater(0);
+	
+	imcperfOnOff.EnableDeadParts(0);
+	config.EnableOtherPCDamageEffect(0);
+	graphic.EnableHitGlow(0);
+	--config.SetEnableShowBossSkillRange(0);
+	config.SetIsEnableSummonAlpha(0)
+	
+	ACTIVATE_HIDDEN();
+	
+	--lowmodeconfig
+	--graphic.EnableLowOption(1);
+	--config.SetAutoAdjustLowLevel(0);
+	config.SaveConfig();
+	
+	FPSSAVIOR_SETTEXT();
+	FPSSAVIOR_SAVESETTINGS()
+end
+
+function FPSSAVIOR_EX()
+	g.settings.saviorToggle = 5;
+		
+	graphic.SetDrawActor(g.settings.drawplayer);
+	graphic.SetDrawMonster(g.settings.drawplayer);
+	graphic.EnableBloom(0);
+	graphic.EnableCharEdge(0);
+	graphic.EnableFXAA(0);
+	graphic.EnableGlow(0);
+	graphic.EnableHighTexture(0);
+	graphic.EnableSoftParticle(0);
+	graphic.EnableWater(0);
+	
+	imcperfOnOff.EnableIMCEffect(0);
+	imcperfOnOff.EnableEffect(0);
+	
 	config.SetRenderShadow(0)
 	imcperfOnOff.EnableRenderShadow(0); 
 	
@@ -427,11 +671,64 @@ function FPSSAVIOR_ULOW()
 	graphic.EnableHitGlow(0);
 	--config.SetEnableShowBossSkillRange(0);
 	config.SetIsEnableSummonAlpha(0)
-
+	
+	imcperfOnOff.EnableFog(0);
+	imcperfOnOff.EnableGrass(0);
+	imcperfOnOff.EnableLight(0);
+	imcperfOnOff.EnableParticleEffectModel(0);
+	imcperfOnOff.EnableParticleInstancing(0);
+	imcperfOnOff.EnableParticleInstancing2(0);
+	imcperfOnOff.EnableParticleModel(0);
+	imcperfOnOff.EnableParticlePoint(0);
+	imcperfOnOff.EnableParticleScreen(0);
+	imcperfOnOff.EnableParticleVertex(0);
+	imcperfOnOff.EnableSky(0);
+	imcperfOnOff.EnableMud(0);
+	imcperfOnOff.EnableMudBlending1(0);
+	imcperfOnOff.EnableMudBlending2(0);
+	imcperfOnOff.EnableMudBlending3(0);
+	imcperfOnOff.EnableMudBlending4(0);
+	imcperfOnOff.EnableMudBlending5(0);
+	imcperfOnOff.EnableMudBlending6(0);
+	imcperfOnOff.EnableMudBlending7(0);
+	imcperfOnOff.EnableBloomObject(0);
+	imcperfOnOff.EnableDepth(0);
+	imcperfOnOff.EnableDynamicTree(0);
+	imcperfOnOff.EnableFork(0);
+	
+	--lowmodeconfig
+	--graphic.EnableLowOption(1);
+	--config.SetAutoAdjustLowLevel(0);
 	config.SaveConfig();
 	
 	FPSSAVIOR_SETTEXT();
 	FPSSAVIOR_SAVESETTINGS()
+end
+
+function ACTIVATE_HIDDEN()
+	imcperfOnOff.EnableFog(1);
+	imcperfOnOff.EnableGrass(1);
+	imcperfOnOff.EnableLight(1);
+	imcperfOnOff.EnableParticleEffectModel(1);
+	imcperfOnOff.EnableParticleInstancing(1);
+	imcperfOnOff.EnableParticleInstancing2(1);
+	imcperfOnOff.EnableParticleModel(1);
+	imcperfOnOff.EnableParticlePoint(1);
+	imcperfOnOff.EnableParticleScreen(1);
+	imcperfOnOff.EnableParticleVertex(1);
+	imcperfOnOff.EnableSky(1);
+	imcperfOnOff.EnableMud(1);
+	imcperfOnOff.EnableMudBlending1(1);
+	imcperfOnOff.EnableMudBlending2(1);
+	imcperfOnOff.EnableMudBlending3(1);
+	imcperfOnOff.EnableMudBlending4(1);
+	imcperfOnOff.EnableMudBlending5(1);
+	imcperfOnOff.EnableMudBlending6(1);
+	imcperfOnOff.EnableMudBlending7(1);
+	imcperfOnOff.EnableBloomObject(1);
+	imcperfOnOff.EnableDepth(1);
+	imcperfOnOff.EnableDynamicTree(1);
+	imcperfOnOff.EnableFork(1);
 end
 
 function FPSSAVIOR_TOGGLE()
@@ -441,30 +738,89 @@ function FPSSAVIOR_TOGGLE()
 		FPSSAVIOR_LOW();
 	elseif g.settings.saviorToggle == 3 then
 		FPSSAVIOR_ULOW();
+	elseif g.settings.saviorToggle == 4 then
+		FPSSAVIOR_EX();
 	else
 		FPSSAVIOR_HIGH();
 	end
 end
 
 function FPSSAVIOR_SHOWORHIDE_OBJ()
-	if (g.settings.allplayers + g.settings.onlypt + g.settings.allsum + g.settings.onlymy) > 0 then
+	-- Check if any setting is on.
+	if (g.settings.allplayers + g.settings.onlypt + g.settings.noguild + g.settings.allsum + g.settings.onlymy + g.settings.shops) > 0 then
 		local list, cnt = SelectObject(GetMyPCObject(), 650, "ALL");
-		for i = 1, cnt do			
+		local musuh = {};
+		local elist, ecnt = SelectObject(GetMyPCObject(), 650, "ENEMY");
+		for i = 1, ecnt do
+			musuh[GetHandle(elist[i])] = true
+		end			
+		local b_list = g.settings.exception	
+		for i = 1, cnt do
 			local ObHandle = GetHandle(list[i]);
 			local OwHandle = info.GetOwner(ObHandle);
-			if (g.settings.allplayers + g.settings.onlypt) > 0 and info.IsPC(ObHandle) == 1 then
-				if g.settings.allplayers == 1 then
+			
+			-- Check if object is character and inside the exception list.
+			if info.IsPC(ObHandle) == 1 and b_list[info.GetFamilyName(ObHandle)] == true then
+
+			-- Check if object is character and inside the delete list.
+			elseif info.IsPC(ObHandle) == 1 and g.settings.deletion[info.GetFamilyName(ObHandle)] == true then
+				world.Leave(ObHandle, 0.0 );
+				
+			-- Check if the object is character and any of the settings is on.
+			elseif (g.settings.allplayers + g.settings.onlypt + g.settings.noguild + g.settings.shops) > 0 and info.IsPC(ObHandle) == 1 then
+					
+				-- Check if the object is an enemy.
+				if musuh[ObHandle] then
+					local placeholder = true;
+					
+				-- Check if the object is a shops.
+				elseif (info.GetTargetInfo(ObHandle).IsDummyPC == 1) then
+				
+					-- Check if the hide shop setting is on.
+					if (g.settings.shops == 1) then
+						world.Leave(ObHandle, 0.0 );
+					end
+								
+				-- Check if all character should be deleted setting is on.
+				elseif g.settings.allplayers == 1 then
 					world.Leave(ObHandle, 0.0 );
+							
+				-- Check if only party member shown setting is on and the object is not in the party.
+				elseif g.settings.noguild == 1 and session.party.GetPartyMemberInfoByName(PARTY_NORMAL, info.GetFamilyName(ObHandle)) == nil then
+					world.Leave(ObHandle, 0.0 );
+						
+				-- Check if the object is not in the party and not in the guild.
 				elseif session.party.GetPartyMemberInfoByName(PARTY_NORMAL, info.GetFamilyName(ObHandle)) == nil and session.party.GetPartyMemberInfoByName(PARTY_GUILD, info.GetFamilyName(ObHandle)) == nil then
-					world.Leave(ObHandle, 0.0 );
+					world.Leave(ObHandle, 0.0 );					
 				end
+
+			-- Check if any of the summon setting is on and the object has owner, which indicate that it's a summon.
 			elseif (g.settings.allsum + g.settings.onlymy) > 0 and OwHandle ~= 0 then
+			
+				-- Check if delete all summon setting is on.
 				if g.settings.allsum == 1 then
 					world.Leave(ObHandle, 0.0 );
+				
+				-- Check if the summon owner is not the player.
 				elseif OwHandle ~= session.GetMyHandle() then
 					world.Leave(ObHandle, 0.0 );
 				end
+				
 			end
         end
+	
+	-- Player inside the delete list will always get deleted even if none of the setting is on.
+	elseif g.settings.deletion ~= {} then
+		if g.settings.deletion == nil then
+			g.settings.deletion = {}
+		end
+		local list, cnt = SelectObject(GetMyPCObject(), 650, "ALL");
+		for i = 1, cnt do
+			local ObHandle = GetHandle(list[i]);
+			local OwHandle = info.GetOwner(ObHandle);
+			if info.IsPC(ObHandle) == 1 and g.settings.deletion[info.GetFamilyName(ObHandle)] == true then
+				world.Leave(ObHandle, 0.0 );
+			end
+		end
 	end	
 end
