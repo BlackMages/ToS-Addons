@@ -766,21 +766,20 @@ function FPSSAVIOR_SHOWORHIDE_OBJ()
 			elseif info.IsPC(ObHandle) == 1 and g.settings.deletion[info.GetFamilyName(ObHandle)] == true then
 				world.Leave(ObHandle, 0.0 );
 				
+			-- Check if the object is a shop.
+			elseif info.GetTargetInfo(ObHandle).IsDummyPC == 1 then
+				
+				-- Check if hide shops setting is on.
+				if (g.settings.shops == 1) then
+					world.Leave(ObHandle, 0.0 );
+				end
+			
 			-- Check if the object is character and any of the settings is on.
-			elseif (g.settings.allplayers + g.settings.onlypt + g.settings.noguild + g.settings.shops) > 0 and info.IsPC(ObHandle) == 1 then
-					
+			elseif (g.settings.allplayers + g.settings.onlypt + g.settings.noguild) > 0 and info.IsPC(ObHandle) == 1 then
+										
 				-- Check if the object is an enemy.
 				if musuh[ObHandle] then
-					local placeholder = true;
 					
-				-- Check if the object is a shops.
-				elseif (info.GetTargetInfo(ObHandle).IsDummyPC == 1) then
-				
-					-- Check if the hide shop setting is on.
-					if (g.settings.shops == 1) then
-						world.Leave(ObHandle, 0.0 );
-					end
-								
 				-- Check if all character should be deleted setting is on.
 				elseif g.settings.allplayers == 1 then
 					world.Leave(ObHandle, 0.0 );
@@ -790,8 +789,10 @@ function FPSSAVIOR_SHOWORHIDE_OBJ()
 					world.Leave(ObHandle, 0.0 );
 						
 				-- Check if the object is not in the party and not in the guild.
-				elseif session.party.GetPartyMemberInfoByName(PARTY_NORMAL, info.GetFamilyName(ObHandle)) == nil and session.party.GetPartyMemberInfoByName(PARTY_GUILD, info.GetFamilyName(ObHandle)) == nil then
-					world.Leave(ObHandle, 0.0 );					
+				elseif g.settings.onlypt == 1 then
+					if session.party.GetPartyMemberInfoByName(PARTY_NORMAL, info.GetFamilyName(ObHandle)) == nil and session.party.GetPartyMemberInfoByName(PARTY_GUILD, info.GetFamilyName(ObHandle)) == nil then
+						world.Leave(ObHandle, 0.0 );
+					end
 				end
 
 			-- Check if any of the summon setting is on and the object has owner, which indicate that it's a summon.
