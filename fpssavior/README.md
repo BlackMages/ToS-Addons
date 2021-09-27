@@ -34,6 +34,12 @@ Notes:
 
 ---
 
+**-v2.5.1** 
+
+- Fix a bug where player are getting deleted by Hide Player Shop option.
+
+---
+
 **-v2.5.0** 
 
 Challenge Mode got revamped with the introduction of Episode 13-2. The content has so many mobs such that the old setting of SetDrawMonster (and possibly also SetDrawActor) became obsolete. In this version we introduce a way to change the SetDrawMonster value through the following command:
