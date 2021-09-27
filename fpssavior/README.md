@@ -66,7 +66,7 @@ https://www.youtube.com/watch?v=cr237zMz8Fk
 There's also delete list, where all player inside the list is removed from the screen regardless of the option that the player use. The command list for delet list can be found using the following command:
 - /fs_del
 
-There was an Extreme Mode from the old version of FPS Savior that help reduce the lag a lot. However, many function on this mode is deprecrated when Ep 12 is introduced. The mode was removed since then. We put it back and renamed it as U2 or Ultra Low 2 just for the sake of history, also some function is still working but the effect is hard to be noticed. Basically it's Ultra Low + whatever function remains from the old Extreme Mode that can be invoked.
+There was an Extreme Mode from the old version of FPS Savior that help reduce the lag a lot. However, lots of important function on this mode are removed when Ep 12 is introduced. The mode was also removed since then. We put it back and renamed it as U2 or Ultra Low 2 just for the sake of history, also some function is still working but the effect is hard to be noticed. Basically it's Ultra Low + whatever function remains from the old Extreme Mode that can be invoked.
 
 ---
 
