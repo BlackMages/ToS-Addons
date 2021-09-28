@@ -3,6 +3,7 @@ Technically it's an EP13fix derived from [Xinxs's FPSSavior](https://github.com/
 
 Notes:
 - Fallen Leaves on orsha are disabled only on UL because it's related with boss gimmick, and when disabled can cause some trouble for people that doing those gimmick.
+- If you're upgrading from any version before 2.5.0, your /fs_draw_mon and /fs_draw_pl might be set to 0 and might cause people name stuck on screen and most stuff dissapeared. Deleting the settings.json file (see below) or adjusting the value will fix this issue.
 - If the addon didn't work, try deleting settings.json file from addon/fpssavior folder.
 ---
 ### Commands:
