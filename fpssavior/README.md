@@ -11,7 +11,7 @@ Currently there are 5 modes for FPSSavior, that is `High`, `Medium`, `Low`, `Ult
 
 Notes:
 - Fallen Leaves on orsha are disabled only on UL because it's related with boss gimmick, and when disabled can cause some trouble for people that doing those gimmick.
-- If you're upgrading from any version before 2.5.0, your /fs_draw_mon and /fs_draw_pl might be set to 0 and might cause people name stuck on screen and most stuff dissapeared. Deleting the settings.json file (see below) or adjusting the value will fix this issue.
+- If you're upgrading from any version before 2.5.0, your `/fs_draw_mon` and `/fs_draw_pl` might be set to 0 and might cause people name stuck on screen and most stuff dissapeared. Deleting the settings.json file (see below) or adjusting the value will fix this issue.
 - <details>
   <summary>tldr: when in doubt, delete settings.json.</summary>
   <p>FPS Savior saves the settings on settings.json file inside the addon/fpssavior folder. There are newer version that add new stuff the settings.json content, and this make the old one incompatible without some adjustment and might cause the addon to behave weirdly or not work at all. So, in case where the addon didn't work, deleting settings.json file might help.</p>
@@ -30,7 +30,7 @@ Notes:
 
   Toggle betwen modes.
 
-- /fs_draw_mon **integer**
+- /fs_draw_mon `integer`
   
   Change how many monster are shown inside the screen.
   
@@ -55,12 +55,12 @@ Notes:
 **-v2.5.0** 
 
 Challenge Mode got revamped with the introduction of Episode 13-2. The content has so many mobs such that the old setting of SetDrawMonster (and possibly also SetDrawActor) became obsolete. In this version we introduce a way to change the SetDrawMonster value through the following command:
-- /fs_draw_mon [integer]
+- /fs_draw_mon `integer`
 
 The usual value of this variable is known to be 100, but we think it can be set to be higher. Note that the value of SetDrawMonster on High mode will always be 100 regardless of the setting.
 
 We also implement a way to change SetDrawActor using the following command:
-- /fs_draw_pl [integer]
+- /fs_draw_pl `integer`
 
 However, we fail to notice any changes from the game visual. Any info regarding what this value affect is appreciated.
 
