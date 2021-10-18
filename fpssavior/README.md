@@ -31,7 +31,7 @@ Other Notes:
   <p>FPS Savior saves the settings on settings.json file inside the addon/fpssavior folder. There are newer version that add new stuff the settings.json content, and this make the old one incompatible without some adjustment and might cause the addon to behave weirdly or not work at all. So, in case where the addon didn't work, deleting settings.json file might help.</p>
   </details>
 ---
-### Commands:
+### Important Commands:
 - /fpssavior help
 
   Display FPS Savior help text through system messages.
