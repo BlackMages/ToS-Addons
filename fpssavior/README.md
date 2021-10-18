@@ -12,22 +12,22 @@ Notes:
   </details>
 ---
 ### Commands:
-- `/fpssavior help`
+- /fpssavior help
 
   Display FPS Savior help text through system messages.
 
-- `/fpssavior **lock**`
+- /fpssavior lock
 
   Lock/unlock the ui to move around.
 
-- `/fpssavior`
+- /fpssavior
 
   Toggle betwen modes.
-  
-- `/fs_draw_mon integer`
+
+- /fs_draw_mon **integer**
   
   Change how many monster are shown inside the screen.
-
+  
 - /fs_ex
 
   Show help text for exception list through system messages. See Version History v2.5.0.
