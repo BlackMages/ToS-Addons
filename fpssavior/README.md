@@ -9,7 +9,21 @@ Currently there are 5 modes for FPSSavior, that is `High`, `Medium`, `Low`, `Ult
 - **Ultra Low** is the mode where almost all settings are turned off. This mode offer the highest FPS but skill effects and some raid mechanics are hidden which may cause some trouble on the gameplay.
 - **Ultra Low 2** is a legacy setting from old FPS Savior. See Version History v2.5.0.
 
-Notes:
+Aside from modes, there are some options added to FPS Savior. They are categorized as Player and Summon options.
+
+Player Options:
+- `Hide all` Ticking this option will hide all player except for yourself.
+- `Show pt/guild only` Ticking this option will hide all player except your party member and your guild member.
+- `Show pt only` Ticking this option will hide all player except your party member.
+- `Hide player shops` Ticking this option will hide player shop. Note that if this is unticked, the player shops will always be visible even when other option is ticked.
+
+Summon Options:
+- `Hide all` This will hide all summon.
+- `Show mine only` Thiss will hide all summon except the one that is created by player.
+
+Note that when any of the summon options are ticked, it will also affected summons from enemy such as elite mosters or bosses. This might hide some of the boss mechanics thus create some problem with the raid.
+
+Other Notes:
 - Fallen Leaves on orsha are disabled only on UL because it's related with boss gimmick, and when disabled can cause some trouble for people that doing those gimmick.
 - If you're upgrading from any version before 2.5.0, your `/fs_draw_mon` and `/fs_draw_pl` might be set to 0 and might cause people name stuck on screen and most stuff dissapeared. Deleting the settings.json file (see below) or adjusting the value will fix this issue.
 - <details>
