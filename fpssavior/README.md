@@ -59,6 +59,13 @@ Other Notes:
 
 ---
 
+**-v2.5.2** 
+
+- Merge Ultra Low and Ultra Low 2.
+- Add Custom mode where it use in-game setting instead of predetermined setting.
+
+---
+
 **-v2.5.1** 
 
 - Fix a bug where player are getting deleted by Hide Player Shop option.
