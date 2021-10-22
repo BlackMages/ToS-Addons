@@ -1,13 +1,12 @@
 ## FPSSavior
 Technically it's an EP13fix derived from [Xinxs's FPSSavior](https://github.com/xinxs/ToS-Addons/tree/master/fpssavior) (which is derived from [FiftyCaliber](https://github.com/FiftyCaliber)). The settings got modified further to accomodate large portion of the player base based on certain judgements.
 
-Currently there are 5 modes for FPSSavior, that is `High`, `Medium`, `Low`, `Ultra Low`, and `Ultra Low 2`. These settings are represented by button with their abbreviation written inside. You can change the modes by clicking the button or using `/fpssavior` command.
+Currently there are 5 modes for FPSSavior, that is `High`, `Medium`, `Low`, `Ultra Low`, and `Custom`. These settings are represented by button with their abbreviation written inside. You can change the modes by clicking the button or using `/fpssavior` command. These modes will force you to use a predetermined setting except for custom where you can use the in-game setting instead.
 
 - **High** is where almost all settings are turned on and set to high.
 - **Medium** is the most preferable setting for majority of players.
 - **Low** is the mode where almost all settings are turned off, and only those that are essential for gameplay (both PvE and PvP) are turned on.
 - **Ultra Low** is the mode where almost all settings are turned off. This mode offer the highest FPS but skill effects and some raid mechanics are hidden which may cause some trouble on the gameplay.
-- **Ultra Low 2** is a legacy setting from old FPS Savior. See Version History v2.5.0.
 
 Aside from modes, there are some options added to FPS Savior. They are categorized as Player and Summon options. You can access these options by clicking the gear icon inside FPSSavior interface.
 
