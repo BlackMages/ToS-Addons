@@ -1,5 +1,5 @@
 ## Manual Instalation Guide
-* Drop the .ipf inside the TreeOfSavior/data folder, add a unicode character to the filename
+* Drop the .ipf file inside the TreeOfSavior/data folder, add a unicode character to the filename
 * Create a corresponding <addon name> folder inside TreeOfSavior/addons folder
 
 Incase you're confused with what to add as unicode character, I suggest to use the snowman character.
