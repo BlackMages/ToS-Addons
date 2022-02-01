@@ -1,6 +1,6 @@
 ## Manual Instalation Guide
 * Drop the .ipf file inside the TreeOfSavior/data folder, add a unicode character to the filename. The folder path usualy looks like this:
-** `...\SteamLibrary\steamapps\common\TreeOfSavior\data`
+* `...\SteamLibrary\steamapps\common\TreeOfSavior\data`
 * Create a corresponding <addon name> folder inside TreeOfSavior/addons folder. The folder name should be the addon name without spaces and no caps.
 
 Incase you're confused with what to add as unicode character, I suggest to use the snowman character.
